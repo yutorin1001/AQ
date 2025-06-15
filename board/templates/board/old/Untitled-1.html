@@ -1,0 +1,72 @@
+
+
+        <ul>
+{% for item in combined %}
+        <div class="message">
+<!--ああああああああああああああああ-->
+
+                    <a href="{% url 'detail' item.id %}" class="post-item">
+                        <a href="{% url 'user_profile' item.user.username %}">
+                        <strong class="message">{{ item.user.username }}</strong>
+                        </a>
+                        <br><br>
+
+                        {% if item.content %}
+
+                        <strong class="message-2">
+                        {{ item.content }}<br>
+                        </strong>
+
+                        {% endif %}
+
+
+
+                        {% if item.image %}
+                        <img src="{{ item.image.url }}" alt="Uploaded Image" style="max-width: 200px; max-height: 200px;">
+                        {% endif %}
+
+                        <small class="time">{{ item.created_at }}</small>
+                    </a>
+
+
+                    <button class="like-btn" data-post-id="{{ item.id }}">
+                        {% if user in item.like.all %}
+                                        取り消す
+                                    {% else %}
+                                        いいね
+                        {% endif %}
+                                </button>
+                                <span class="like-count">{{ item.like.count }}</span>件のいいね
+
+                                <div class="message">
+                                    <button class="showFormButton">返信を表示</button>
+                                    <div class="form-container">
+                                        <form class="reply-form" data-post-id="{{ item.id }}">
+                                            {% csrf_token %}
+                                            <textarea name="content" rows="3" placeholder="返信を入力してください"></textarea>
+                                            <button type="submit">送信</button>
+                                        </form>
+                                        <div class="replies">
+                                            <h3>返信一覧</h3>
+                        {% for reply in item.replies.all %}
+                                                <div class="reply">
+                                                    <a href="{% url 'user_profile' reply.user.username %}">
+                                                    <strong>{{ reply.user.username }}</strong></a>: {{ reply.content }}<br>
+                                                    <small>{{ reply.created_at }}</small><br><br>
+                                                </div>
+                        {% endfor %}
+                                        </div>                                    
+                                    </div> 
+                                </div>
+
+
+    {% endfor %}
+        </ul>
+
+
+
+
+
+
+
+

@@ -1,0 +1,63 @@
+<style>
+    .rotating-text {
+  display: inline-block; /* transformが正しく適用されるように */
+  font-size: 2em;        /* お好みでサイズ調整 */
+  color: #FF0000;        /* LEDらしい赤色 */
+  text-shadow: 0 0 5px #FF0000;  /* 輝きを演出 */
+  animation: rotate-animation 3s linear infinite;
+}
+
+@keyframes rotate-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }  
+}
+
+
+
+
+
+
+
+/* テキストが入るコンテナはオーバーフローを隠して横幅いっぱいに広げます */
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  background-color: #ff43a4; /* お好みで背景色を変更 */
+  padding: 10px 0;
+}
+
+/* アニメーションさせたいテキストのスタイル */
+.marquee-text {
+  display: inline-block;
+  white-space: nowrap;       /* テキストを一行にする */
+  color: #fff;               /* テキストカラー */
+  font-size: 2em;            /* お好みで調節 */
+  animation: marqueeAnimation 10s linear infinite;
+}
+
+/* キーフレームで右から左への移動を定義 */
+@keyframes marqueeAnimation {
+  0% {
+    transform: translateX(100%); /* テキストはコンテナの右外からスタート */
+  }
+  100% {
+    transform: translateX(-100%); /* テキストはコンテナの左外まで移動 */
+  }
+}
+
+
+
+</style>
+
+<p class="rotating-text">電光掲示板風の文字</p>
+
+<div class="marquee-container">
+    <div class="marquee-text">
+      ここに流れるテキストを入力してください！
+    </div>
+  </div>
+  

@@ -1,0 +1,231 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'board/tobase.css' %}">
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>SNSデモ</title>
+
+<script>
+    document.addEventListener("copy", function() {
+  window.alert("コピーしたよ");
+});
+</script>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const likeButtons = document.querySelectorAll('.like-btn');
+        likeButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const postId = this.dataset.postId;
+                fetch(`/post/${postId}/like/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.liked) {
+                        this.textContent = '取り消す';
+                    } else {
+                        this.textContent = 'いいね';
+                    }
+                    this.nextElementSibling.textContent = `${data.like_count}`;
+                });
+            });
+        });
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const postItems = document.querySelectorAll('.post-item');
+        postItems.forEach(item => {
+            item.addEventListener('click', function () {
+                const postId = this.dataset.postId; // data-post-id属性から投稿IDを取得
+                window.location.href = `/detail/${postId}/`; // 詳細ページに遷移
+            });
+        });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.showFormButton');
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const formContainer = this.nextElementSibling; // ボタンの次の要素を取得
+            if (formContainer.style.display === 'none' || formContainer.style.display === '') {
+                formContainer.style.display = 'block'; // フォームを表示
+                this.textContent = "返信を閉じる";
+            } else {
+                formContainer.style.display = 'none'; // フォームを隠す
+                this.textContent = "返信を表示";
+              
+            }
+        });
+    });
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const replyForms = document.querySelectorAll('.reply-form');
+    replyForms.forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); 
+
+            const postId = this.dataset.postId;
+            const content = this.querySelector('textarea[name="content"]').value;
+            const csrfToken = this.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+            fetch(`/post/${postId}/reply/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken
+                },
+                body: new URLSearchParams({ content: content })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const repliesContainer = this.nextElementSibling; // 返信一覧のコンテナ
+                    const newReply = document.createElement('div');
+                    newReply.classList.add('reply');
+                    newReply.innerHTML = `
+                        <strong>${data.reply.user}</strong>: ${data.reply.content}<br>
+                        <small>${data.reply.created_at}</small><br><br>
+                    `;
+                    repliesContainer.appendChild(newReply); // 新しい返信を追加
+                    this.querySelector('textarea[name="content"]').value = ''; // フォームをリセット
+                } else {
+                    alert('返信の送信に失敗しました。');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+});
+
+</script>
+
+
+<style>
+    .UserName{
+        z-index: 110;
+        text-align: center;
+
+
+    }
+
+
+
+
+.backimage {
+    width: 100;
+
+}
+</style>
+</head>
+<body>
+
+
+   
+
+    <div class="main-content">
+        <div class="header"><a class="tii">SNS デモ  </a>
+
+            <div class="backimage"></div>
+               <a class="logout"  onclick="window.location.href='/accounts/logout/';">ログアウト</a>
+
+               <a class = "username">
+               {{request.user.username}}さん 
+               </a>
+             </div>
+
+
+             <p>メールアドレス: {{ profile_user.email }}</p>
+             <p>登録日: {{ profile_user.date_joined }}</p>
+         
+ <strong>
+    <div class="chat-area" id="cl">
+        <h1 class="message">{{ profile_user.username }}</h1>
+        <p class="message">登録日: {{ profile_user.date_joined }}</p>
+        {% for item in combined %}
+            <div class="message">
+                {% if item|instanceof:"Post" %}
+                    <!-- 投稿の場合 -->
+                    <strong>投稿:</strong> {{ item.content }}<br>
+                    <small>投稿日: {{ item.created_at }}</small>
+                {% elif item|instanceof:"Reply" %}
+                    <!-- 返信の場合 -->
+                    <strong>返信:</strong> {{ item.content }}<br>
+                    <small>返信先: {{ item.post.content }}</small><br>
+                    <small>返信日時: {{ item.created_at }}</small>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>投稿や返信がありません。</p>
+        {% endfor %}
+ 
+        <h1>プロフィール編集</h1>
+        <p>{{ profile_user.profile.bio|default:"自己紹介がまだ設定されていません。" }}</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">保存</button>
+        </form>
+        
+        <!-- プロフィールアイコンの表示 -->
+        <div>
+            {% if profile_user.profile.icon %}
+                <img src="{{ profile_user.profile.icon.url }}" alt="User Icon" style="width: 100px; height: 100px; border-radius: 50%;">
+            {% else %}
+                <img src="{% static 'icons/default_icon.png' %}" alt="Default Icon" style="width: 100px; height: 100px; border-radius: 50%;">
+            {% endif %}
+        </div>
+<!--
+
+    <div class="sidebar">
+        <div class="channel"># TOP</div>
+        <div class="channel"># フォローの投稿</div>
+        <div class="channel"># 創作総合</div>     
+        <div class="channel">&nbsp;&nbsp;&nbsp;&nbsp;イラスト</div>        
+        <div class="channel">&nbsp;&nbsp;&nbsp;&nbsp;DTM</div>    
+        <div class="channel">&nbsp;&nbsp;&nbsp;&nbsp;その他</div>    
+        <div class="channel"># 言語総合</div>
+        <div class="channel"># ゲーマー</div>
+
+        <div class="channel"># ランダム表示</div>
+    </div>
+
+
+    <div class="left-side">
+        <div class="channel">Your Guild</div>
+        <div class="channel">@開発者サバ</div>
+        <div class="channel">@言語総合</div>     
+        <div class="channel">@嫌儲鯖</div>
+        <div class="channel">@運営鯖</div>
+        <div class="channel"  onclick="window.location.href='https://google.com';">@FPS鯖</a></div>
+
+        <div class="channel">+ Add New Guild</div>
+    </div>
+    <div class="buzz">  
+
+        <div class="buzzTx">バズってる</div>
+        <div class="buzzTx">Music:</div>
+        <div class="buzzTx">HardBassJinja &nbsp;&nbsp;▶</div>
+        <div class="buzzTx">Picture</div>
+        
+    </div>
+    
+-->
+
+</body>
+</html>

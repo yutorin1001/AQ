@@ -1,0 +1,11 @@
+asgiref==3.8.1
+bleach==6.2.0
+Django==5.2
+django-allauth==65.7.0
+pillow==11.2.1
+python-http-client==3.3.7
+sendgrid==3.6.5
+sendgrid-django==4.2.0
+sqlparse==0.5.3
+tzdata==2025.2
+webencodings==0.5.1

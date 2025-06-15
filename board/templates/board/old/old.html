@@ -1,0 +1,339 @@
+{% load static %}
+{% load custom_filters %}
+<link rel="stylesheet" type="text/css" href="{% static 'board/tobase.css' %}">
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>SNSデモ</title>
+
+<script>
+    document.addEventListener("copy", function() {
+  window.alert("コピーしたよ");
+});
+</script>
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const likeButtons = document.querySelectorAll('.like-btn');
+    likeButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const postId = this.dataset.postId;
+            const imageId = this.dataset.imageId;
+            let url = '';
+
+            if (postId) {
+                url = `/post/${postId}/like/`;
+            } else if (imageId) {
+                url = `/image/${imageId}/like/`;
+            }
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.liked) {
+                    this.textContent = '取り消す';
+                } else {
+                    this.textContent = 'いいね';
+                }
+                this.nextElementSibling.textContent = `${data.like_count}`;
+            });
+        });
+    });
+});
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const postItems = document.querySelectorAll('.post-item');
+        postItems.forEach(item => {
+            item.addEventListener('click', function () {
+                const postId = this.dataset.postId; // data-post-id属性から投稿IDを取得
+                window.location.href = `/detail/${postId}/`; // 詳細ページに遷移
+            });
+        });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.showFormButton');
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const formContainer = this.nextElementSibling; // ボタンの次の要素を取得
+            if (formContainer.style.display === 'none' || formContainer.style.display === '') {
+                formContainer.style.display = 'block'; // フォームを表示
+                this.textContent = "返信を閉じる";
+            } else {
+                formContainer.style.display = 'none'; // フォームを隠す
+                this.textContent = "返信を表示";
+              
+            }
+        });
+    });
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const replyForms = document.querySelectorAll('.reply-form');
+    replyForms.forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const postId = this.dataset.postId;
+            const imageId = this.dataset.imageId;
+            const content = this.querySelector('textarea[name="content"]').value;
+            const csrfToken = this.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+            let url = '';
+            if (postId) {
+                url = `/post/${postId}/reply/`;
+            } else if (imageId) {
+                url = `/image/${imageId}/reply/`;
+            }
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken
+                },
+                body: new URLSearchParams({ content: content })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const repliesContainer = this.nextElementSibling; // 返信一覧のコンテナ
+                    const newReply = document.createElement('div');
+                    newReply.classList.add('reply');
+                    newReply.innerHTML = `
+                        <strong>${data.reply.user}</strong>: ${data.reply.content}<br>
+                        <small>${data.reply.created_at}</small>
+                    `;
+                    repliesContainer.appendChild(newReply); // 新しい返信を追加
+                    this.querySelector('textarea[name="content"]').value = ''; // フォームをリセット
+                } else {
+                    alert('返信の送信に失敗しました。');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+});
+
+</script>
+
+<style>
+
+</style>
+<style>
+
+    .image1 {
+        max-width: 200px;
+        max-height: 200px;
+        border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    }
+    .custom-file-upload {
+        display: inline-block;
+        padding: 10px 20px;
+        cursor: pointer;
+        background-color: #7289da;
+        color: white;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .custom-file-upload:hover {
+        background-color: #5b6eae;
+    }
+
+    .submit_image {
+        z-index: 150;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .submit_image:hover {
+        background-color: #45a049;
+    }
+
+
+    .post-item {
+        border-bottom: 1px solid #ccc; /* 下線を追加 */
+        padding: 10px 0; /* 上下の余白を追加 */
+    }
+
+    .post-item:last-child {
+        border-bottom: none; /* 最後の投稿には下線を表示しない */
+    }
+
+</style>
+
+</head>
+<body>
+
+
+
+<div class="main-content">
+    <div class="header"><a class="tii">SNS デモ  </a>
+               <a class="logout"  onclick="window.location.href='/accounts/logout/';">ログアウト</a>
+
+               <a class = "username">
+               {{request.user.username}}さん 
+               </a>
+    </div>
+
+
+<strong>
+    <div class="chat-area" id="cl">
+
+<form method="post" action="{% url 'post_create' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <textarea class="Area" name="content" rows="3" placeholder="内容を入力してください"></textarea>
+    <input type="file" name="image" accept="image/*">
+    <button type="submit" class="submit">投稿</button>
+</form>
+
+
+
+    
+
+
+<ul>
+    {% for item in combined %}
+<div class="message">
+    <div class="post-item">
+    <!--ああああああああああああああああ-->
+
+    <!--<a href="{% url 'detail' item.id %}" class="post-item">-->
+                            <a href="{% url 'user_profile' item.user.username %}">
+                            <strong class="message">{{ item.user.username }}</strong>
+                            </a>
+                            <br><br>
+    
+                            {% if item.content %}
+    
+                            <strong class="message-2">
+                                <a href="{% url 'detail' item.id %}" class="post-item"></a>
+                                
+                            {{ item.content }}<br>
+                            </strong>
+    
+                            {% endif %}
+    
+    
+    
+                            {% if item.image %}
+                            <div class="image1">
+                            <img src="{{ item.image.url }}" alt="Uploaded Image" class="image1" >
+                        </div>
+                            <br><br>
+                            {% endif %}
+    
+                            <small class="time">{{ item.created_at }}</small>
+                        </a>
+    
+    
+                        <button class="like-btn" data-post-id="{{ item.id }}">
+                            {% if user in item.like.all %}
+                                            取り消す
+                                        {% else %}
+                                            いいね
+                            {% endif %}
+                                    </button>
+                                    <span class="like-count">{{ item.like.count }}</span>件のいいね
+    
+<div class="message">
+                                        <button class="showFormButton">返信を表示</button>
+                                        <div class="form-container">
+                                            <form class="reply-form" data-post-id="{{ item.id }}">
+                                                {% csrf_token %}
+                                                <textarea name="content" rows="3" placeholder="返信を入力してください"></textarea>
+                                                <button type="submit">送信</button>
+                                            </form>
+                                            <div class="replies">
+                                                <h3>返信一覧</h3>
+                            {% for reply in item.replies.all %}
+                                                    <div class="reply">
+                                                        <a href="{% url 'user_profile' reply.user.username %}">
+                                                        <strong>{{ reply.user.username }}</strong></a>: {{ reply.content }}<br>
+                                                        <small>{{ reply.created_at }}</small><br><br>
+                                                    </div>
+                            {% endfor %}
+                                            </div>                                    
+                                        </div> 
+                                    </div>
+
+                                    <br><br>
+                                </div>
+        {% endfor %}
+            </ul>
+</div>
+
+</div>
+    
+<br><br>
+    
+    
+    
+
+
+    
+<!--
+
+
+    <div class="sidebar">
+        <div class="channel"># TOP</div>
+        <div class="channel"># フォローの投稿</div>
+        <div class="channel"># 創作総合</div>     
+        <div class="channel">&nbsp;&nbsp;&nbsp;&nbsp;イラスト</div>        
+        <div class="channel">&nbsp;&nbsp;&nbsp;&nbsp;DTM</div>    
+        <div class="channel">&nbsp;&nbsp;&nbsp;&nbsp;その他</div>    
+        <div class="channel"># 言語総合</div>
+        <div class="channel"># ゲーマー</div>
+
+        <div class="channel"># ランダム表示</div>
+    </div>
+
+
+    <div class="left-side">
+        <div class="channel">Your Guild</div>
+        <div class="channel">@開発者サバ</div>
+        <div class="channel">@言語総合</div>     
+        <div class="channel">@嫌儲鯖</div>
+        <div class="channel">@運営鯖</div>
+        <div class="channel"  onclick="window.location.href='https://google.com';">@FPS鯖</a></div>
+
+        <div class="channel">+ Add New Guild</div>
+    </div>
+    <div class="buzz">  
+
+        <div class="buzzTx">バズってる</div>
+        <div class="buzzTx">Music:</div>
+        <div class="buzzTx">HardBassJinja &nbsp;&nbsp;▶</div>
+        <div class="buzzTx">Picture</div>
+        
+    </div>
+    
+
+-->
+</body>
+</html>

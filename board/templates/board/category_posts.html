@@ -1,0 +1,10 @@
+<h2>{{ category }}の投稿</h2>
+{% for post in posts %}
+  <div class="post">
+    <div class="info">{{ post.user.username }}</div>
+    <div class="content">{{ post.content }}</div>
+    <!-- 他の情報も表示可能 -->
+  </div>
+{% empty %}
+  <p>このカテゴリにはまだ投稿がありません。</p>
+{% endfor %}

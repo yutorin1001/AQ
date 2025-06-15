@@ -1,0 +1,46 @@
+<script src="https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/pyxel.js"></script>
+<pyxel-run script="
+
+# ここにPyxel (Python)のコードを書いてください
+# 例えばこんな感じに…
+import pyxel
+
+# ゲーム初期化
+class App:
+    def __init__(self):
+        pyxel.init(160, 120)  # 画面サイズとタイトル
+        self.player_x = 75  # プレイヤーの初期位置
+        self.player_y = 55
+        self.star_x = 30  # 星の位置
+        self.star_y = 40
+        self.score = 0  # スコア
+        pyxel.run(self.update, self.draw)
+
+    def update(self):
+        # プレイヤーの移動操作
+        if pyxel.btn(pyxel.KEY_W):
+            self.player_y -= 2
+        if pyxel.btn(pyxel.KEY_S):
+            self.player_y += 2
+        if pyxel.btn(pyxel.KEY_A):
+            self.player_x -= 2
+        if pyxel.btn(pyxel.KEY_D):
+            self.player_x += 2
+
+        # プレイヤーが星を拾ったか判定
+        if (abs(self.player_x - self.star_x) < 8 and
+                abs(self.player_y - self.star_y) < 8):
+            self.score += 1
+            self.star_x = pyxel.rndi(0, pyxel.width - 8)
+            self.star_y = pyxel.rndi(0, pyxel.height - 8)
+
+    def draw(self):
+        pyxel.cls(0)  # 画面をクリア
+        pyxel.text(5, 5, pyxel.COLOR_WHITE)  # スコア表示
+        pyxel.rect(self.player_x, self.player_y, 8, 8, pyxel.COLOR_BLUE)  # プレイヤー表示
+        pyxel.rect(self.star_x, self.star_y, 8, 8, pyxel.COLOR_YELLOW)  # 星表示
+
+# ゲーム開始
+App()
+
+"></pyxel-run>

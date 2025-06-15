@@ -1,0 +1,577 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #15202B; /* ツイッターの背景色 */
+    color: #FFFFFF; /* テキストの色 */
+}
+
+a{font-size:100%;vertical-align:baseline;text-decoration:none;color:inherit}
+body.is-en{font-family:"Open Sans",sans-serif;font-weight:400}
+
+
+.chat_head {
+    top: 0px; /* 変更されないようにする */
+    will-change: transform; 
+    height: 50px;
+    width:48%;
+    background-color: #89c3eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 必要に応じて調整 */
+
+    position: fixed; /* 親要素.chat-area内で固定ではなく、画面全体で固定 */
+    z-index: 1000; /* 他の要素の上に表示 */
+    color: rgb(39, 37, 62);
+    font-weight: bold;
+}
+
+
+.chat_head2 {
+    top: 50px; /* 変更されないようにする */
+    will-change: transform; 
+    height: 30px;
+    width:48%;
+    background-color: #cb34b4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 必要に応じて調整 */
+
+    position: fixed; /* 親要素.chat-area内で固定ではなく、画面全体で固定 */
+    z-index: 1000; /* 他の要素の上に表示 */
+    color: white;
+    font-weight: bold;
+}
+
+
+
+
+.m-form-keyWord,
+.tag_list {
+    height: 200px; 
+    overflow-y: auto;
+    position: fixed;
+    top: 20%;
+    right: 1%;
+    width: 28%;
+    background-color: #192734;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 11px;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+
+
+.m-form-keyWord__btn{
+    display:block;
+    line-height:1;
+    font-weight:600;
+    border:1px solid #dcdbdc;
+    border-radius:17px;
+    font-size:13px;
+    padding:11px 16px 10px;
+    transition:all 600ms;
+    margin-top:11px;
+    margin-right:4px;
+    margin-left:4px;
+    font-size:11px;border-radius:20px;
+}
+
+
+.m-form-keyWord__btn:hover
+{opacity:1;
+    background-color:#0a923a;
+    color:#fff;
+    border:1px solid transparent
+}
+
+.backyard {
+ 
+    width: 80%;
+    height: 25%;
+    background-color: #192734; /* 投稿の背景色 */
+    border-radius: 10px;
+    margin-bottom: 20px;
+    color: #FFFFFF;
+    
+    }
+
+
+
+.odd {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 50px;
+    width: 12%;
+    background-color: #15202B; /* サイドバーの背景色 */
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    color: #1c2d3e;
+
+}
+.sidebar {
+    position: fixed;
+
+    left: 0;
+    height: calc(100vh + 50px);
+    width: 12%;
+    background-color: #192734; /* サイドバーの背景色 */
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    color: #8899A6; /* サイドバーのテキスト色 */
+}
+
+.sidebar .channel {
+    margin-bottom: 11px;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.sidebar .channel:hover {
+    background-color:#0a6592;
+    color: white;
+}
+
+.chat-area {
+    margin-top: 50px;
+    margin-left: 15%;
+    
+    width: 60%;
+    padding: 20px;
+    background-color: #15202B;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.post {
+
+    box-sizing: border-box; 
+    margin-top: 5px; /* 上に5pxの間隔を追加 */
+    width: 80%;
+    background-color: #192734; /* 投稿の背景色 */
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    color: #FFFFFF;
+}
+
+
+
+
+.post .info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 110%;
+}
+
+.post .info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* 丸いアイコン */
+    margin-right: 10px;
+}
+
+.post .info .username {
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.post .content {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #E1E8ED; /* 投稿内容の色 */
+}
+
+.post .content-image {
+    max-width: 80%;
+    border-radius: 10px;
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post .actions {
+    display: flex;
+    margin-left: 10%;
+    margin-top: 10px;
+    color: #8899A6;
+}
+
+.post .actions span {
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.post .actions span:hover {
+    color: #1DA1F2; /* ホバー時の青色 */
+}
+
+
+
+.showFormButton {
+    
+    display: flex;
+
+    color: #8899A6;
+}
+
+.showFormButton span {
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.showFormButton span:hover {
+    color: #1DA1F2; /* ホバー時の青色 */
+}
+
+/*
+.tags {
+    overflow-y: auto;
+    border-radius: 10px;
+    margin-top: 5%;
+    position: absolute;
+    top: 50px;
+    right: calc(5% + 20px);
+    height: 30%;
+    width: 20%;
+    background-color: #192734;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    color: #8899A6; 
+}
+*/
+
+.tags {
+    position: fixed;
+    top: 15%;
+    right: 3%;
+    height: 30%;
+    width: 20%;
+    background-color: #192734; /* サイドバーの背景色 */
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    color: #8899A6; /* サイドバーのテキスト色 */
+}
+
+.tags .tag:hover {
+    background-color: #1DA1F2; /* ホバー時の青色 */
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+ 
+a{font-size:100%;vertical-align:baseline;text-decoration:none;color:inherit}
+body.is-en{font-family:"Open Sans",sans-serif;font-weight:400}
+.m-form-keyWord,
+
+
+
+.tag_list {
+    height: 200px; 
+    overflow-y: auto;
+    position: fixed;
+    top: 20%;
+    right: 1%;
+    width: 28%;
+    background-color: #192734;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 11px;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+
+.m-form-keyWord__btn{
+    display:block;
+    line-height:1;
+    font-weight:600;
+    border:1px solid #dcdbdc;
+    border-radius:17px;
+    font-size:13px;
+    padding:11px 16px 10px;
+    transition:all 600ms;
+    margin-top:11px;
+    margin-right:4px;
+    margin-left:4px;
+    font-size:11px;border-radius:20px;
+}
+
+
+.m-form-keyWord__btn:hover
+{opacity:1;
+    background-color:#0a923a;
+    color:#fff;
+    border:1px solid transparent
+}
+
+
+.search_form {
+position: fixed; /* 要素を画面に固定 */
+top: 85%; /* 上からの位置を調整 */
+right: 3%; /* 右からの位置を調整 */
+transform: none; /* 不要な変形を無効化 */
+z-index: 100; /* 他の要素より前面に表示 */
+}
+
+.search-form-2 {
+display: flex;
+align-items: center;
+overflow: hidden;
+border-radius: 3px;
+}
+
+.search-form-2 input {
+width: 250px;
+height: 45px;
+padding: 5px 15px;
+border: none;
+border-radius: 3px 0 0 3px;
+box-sizing: border-box;
+background-color: #f2f2f2;
+font-size: 1em;
+outline: none;
+}
+
+.search-form-2 input::placeholder {
+color: #777777;
+}
+
+.search-form-2 button {
+display: flex;
+justify-content: center;
+align-items: center;
+width: 50px;
+height: 45px;
+border: none;
+border-radius: 0 3px 3px 0;
+background-color: #2589d0;
+cursor: pointer;
+}
+
+.search-form-2 button::after {
+width: 24px;
+height: 24px;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z' fill='%23fff'%3E%3C/path%3E%3C/svg%3E");
+background-repeat: no-repeat;
+content: '';
+}
+
+.form-container {
+display: none; 
+background-color: #192734;
+padding: 10px;
+/*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);*/
+}
+
+
+
+
+
+.box{
+display: none;
+position: fixed;
+margin-left: 10%;
+    width: 28.8%;
+    height: 55%;
+    background-color: black;
+    border-radius: 20px;
+    color: #8899A6;
+}
+
+
+.box1{
+    display: none;
+    position: fixed;
+    margin-left: 10%;
+        width: 28.8%;
+        height: 55%;
+        background-color: black;
+        border-radius: 20px;
+        color: #8899A6;
+    }
+
+
+.Area {
+    color: #8899A6;
+    background:#000000;
+    width: 80%;
+    margin-top: 5%;
+    height: 60%;
+    margin-left: 10%;
+    resize: none;
+    border: none;
+    font-size: x-large;
+    
+}
+
+textarea:focus {
+outline: none; /* フォーカス時のアウトラインを消す */
+border-color: #e1e8ed; /* フォーカス時も同じ線の色にする */
+}
+.button-container {
+display: flex; /* フレックスボックスを使用 */
+
+align-items: center; /* ボタンを中央揃え */
+width: 100%; /* コンテナの幅を指定 */
+margin-top: 10px; /* 上部に余白を追加 */
+}
+
+.button-3 {
+display: inline-block; 
+padding: .9em 2em;
+border: none;
+margin-left: 30%;
+border-radius: 25px;
+box-shadow: 0 2px 3px rgba(255, 255, 255, 0.25), 0 2px 3px -2px rgba(255, 255, 255, 0.15);
+background-color: #2589d0;
+color: #fff;
+font-weight: 600;
+font-size: 1em;
+text-align: center; /* テキストを中央揃え */
+margin: 0 20px; /* ボタン間の余白を追加 */
+}
+
+.button-3:hover {
+background-color: #1579c0;
+}
+
+.button-4 {
+top: 60;
+position: fixed;
+margin-left: 50%;
+display: inline-block; 
+padding: .9em 2em;
+border: none;
+border-radius: 25px;
+box-shadow: 0 2px 3px rgba(255, 255, 255, 0.25), 0 2px 3px -2px rgba(255, 255, 255, 0.15);
+background-color: #2589d0;
+color: #fff;
+font-weight: 600;
+font-size: 1em;
+text-align: center; /* テキストを中央揃え */
+margin: 0 20px; /* ボタン間の余白を追加 */
+}
+
+.button-4:hover {
+background-color: #1579c0;
+}
+
+
+.button-5 {
+    top: 60;
+    display: inline-block; 
+    padding: .9em 2em;
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0 2px 3px rgba(255, 255, 255, 0.25), 0 2px 3px -2px rgba(255, 255, 255, 0.15);
+    background-color: #c029ac;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1em;
+    text-align: center; /* テキストを中央揃え */
+    }
+    
+    .button-5:hover {
+    background-color: #881863;
+    }
+
+.left-side {
+width: 20%;
+margin-left: 80%;
+
+}
+
+.base-image {
+width: 6%;
+position:absolute
+}
+
+
+
+
+
+
+.rotating-text {
+    display: inline-block; /* transformが正しく適用されるように */
+    font-size: 2em;        /* お好みでサイズ調整 */
+    color: #FF0000;        /* LEDらしい赤色 */
+    text-shadow: 0 0 5px #FF0000;  /* 輝きを演出 */
+    animation: rotate-animation 3s linear infinite;
+  }
+  
+  @keyframes rotate-animation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }  
+  }
+  
+  /* テキストが入るコンテナはオーバーフローを隠して横幅いっぱいに広げます */
+  .marquee-container {
+    width: 100%;
+    overflow: hidden;
+    background-color: #ff43a4; /* お好みで背景色を変更 */
+    padding: 10px 0;
+  }
+  
+  /* アニメーションさせたいテキストのスタイル */
+  .marquee-text {
+    display: inline-block;
+    white-space: nowrap;       /* テキストを一行にする */
+    color: #fff;               /* テキストカラー */
+    font-size: 2em;            /* お好みで調節 */
+    animation: marqueeAnimation 10s linear infinite;
+  }
+  
+  /* キーフレームで右から左への移動を定義 */
+  @keyframes marqueeAnimation {
+    0% {
+      transform: translateX(100%); /* テキストはコンテナの右外からスタート */
+    }
+    100% {
+      transform: translateX(-100%); /* テキストはコンテナの左外まで移動 */
+    }
+  }
+  
+  
+  
+
+
+  .iframe-wrapper {
+    width: 620px;
+    height: 240px; /* 固定値 */
+    overflow: hidden;
+    position: relative;
+}
+.scaled-iframe {
+    width: 640px;
+    height: 480px;
+    border: none;
+    transform: scale(0.5);
+    transform-origin: top left;
+    display: block;
+}

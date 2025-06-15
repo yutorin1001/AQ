@@ -1,0 +1,1116 @@
+{% load custom_filters %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'board/base.css' %}">
+
+<head>
+<head>
+
+<style>
+
+
+a{font-size:100%;vertical-align:baseline;text-decoration:none;color:inherit}
+body.is-en{font-family:"Open Sans",sans-serif;font-weight:400}
+.m-form-keyWord,
+
+
+.tag_list {
+height: 200px; 
+overflow-y: auto;
+position: fixed;
+top: 50px;
+right: 1%;
+width: 28vw;
+background-color: #192734;
+display: flex;
+align-items: center;
+flex-wrap: wrap;
+justify-content: center;
+font-size: 11px;
+border-radius: 20px;
+padding: 10px;
+}
+
+
+.m-form-keyWord__btn{
+display:block;
+line-height:1;
+font-weight:600;
+border:1px solid #dcdbdc;
+border-radius:17px;
+font-size:13px;
+padding:11px 16px 10px;
+transition:all 400ms;
+margin-top:11px;
+margin-right:4px;
+margin-left:4px;
+font-size:11px;border-radius:20px;
+}
+
+
+.m-form-keyWord__btn:hover
+{opacity:1;
+background-color:#0a923a;
+color:#fff;
+border:1px solid transparent
+}
+
+
+.search_form {
+position: fixed; /* 要素を画面に固定 */
+top: 85%; /* 上からの位置を調整 */
+right: 3%; /* 右からの位置を調整 */
+transform: none; /* 不要な変形を無効化 */
+z-index: 100; /* 他の要素より前面に表示 */
+}
+
+.search-form-2 {
+display: flex;
+align-items: center;
+overflow: hidden;
+border-radius: 3px;
+}
+
+.search-form-2 input {
+width: 250px;
+height: 45px;
+padding: 5px 15px;
+border: none;
+border-radius: 3px 0 0 3px;
+box-sizing: border-box;
+background-color: #f2f2f2;
+font-size: 1em;
+outline: none;
+}
+
+.search-form-2 input::placeholder {
+color: #777777;
+}
+
+.search-form-2 button {
+display: flex;
+justify-content: center;
+align-items: center;
+width: 50px;
+height: 45px;
+border: none;
+border-radius: 0 3px 3px 0;
+background-color: #2589d0;
+cursor: pointer;
+}
+
+.search-form-2 button::after {
+width: 24px;
+height: 24px;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z' fill='%23fff'%3E%3C/path%3E%3C/svg%3E");
+background-repeat: no-repeat;
+content: '';
+}
+
+.rep {
+margin-left: 10%;
+}
+
+.form-container {
+display: none; 
+margin-top: 20%;
+background-color: #192734;
+padding: 10px;
+/*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);*/
+}
+
+
+.showFormButton {
+margin-left: 5%;
+
+
+}
+
+
+
+.user_icon {
+   width: 100px; height: 100px; border-radius: 50%;
+position: relative;
+margin-top: -10%;
+margin-left: 5%;
+}
+
+.user_name {
+
+    margin-left: 20%;
+    margin-top: -5%;
+}
+
+
+.left{
+      float: left;
+    }
+
+
+
+    .horizontal-line {
+  width: 80%;              
+  border-top: 1px solid #656565; 
+  margin: 20px 0;      
+}
+
+.boxx {
+
+    
+margin-top: 2%;
+
+}
+
+
+.three-split {
+  display: flex;
+  width: 80%;
+  border-bottom: 1px solid #8899A6;; /* 線の太さと色 */
+
+}
+
+
+
+.split-1 ,.split-2 ,.split-3 ,.split-4{
+
+    color: #8899A6;
+  flex: 1;              
+  padding: 10px;
+  text-align: center;
+  transition:all 600ms;
+}
+
+.split-1:hover, .split-2:hover, .split-3:hover, .split-4:hover {
+    opacity: 1;
+    background-color: #0a6592;
+    color: #fff;
+    border: 1px solid transparent;
+}
+
+/* 最初の要素以外の左側に縦線を引く */
+.split-2 ,.split-3 ,.split-4:not(:first-child) {
+  border-left: 1px solid #8899A6;; /* 縦線の太さと色を指定 */
+}
+.user_expl {
+    margin-left: 5%;
+}
+
+
+.date {
+margin-top: 10%;
+color: #8899A6;
+}
+
+
+.liked-posts {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #192734;
+    border-radius: 10px;
+    color: #FFFFFF;
+    display: none;
+    margin-bottom: 20px;
+}
+
+.liked-posts h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #1DA1F2;
+}
+
+.liked-posts ul {
+    list-style: none;
+    padding: 0;
+}
+
+.liked-posts li {
+    margin-bottom: 10px;
+}
+
+.liked-posts a {
+    color: #1DA1F2;
+    text-decoration: none;
+}
+
+.liked-posts a:hover {
+    text-decoration: underline;
+}
+
+
+.post {
+
+box-sizing: border-box; 
+margin-top: 5px; /* 上に5pxの間隔を追加 */
+width: 80%;
+background-color: #192734; /* 投稿の背景色 */
+border-radius: 10px;
+padding: 15px;
+margin-bottom: 20px;
+color: #FFFFFF;
+}
+
+.post .info {
+display: flex;
+align-items: center;
+margin-bottom: 10px;
+}
+
+.post .info img {
+width: 40px;
+height: 40px;
+border-radius: 50%; /* 丸いアイコン */
+margin-right: 10px;
+}
+
+.post .info .username {
+font-weight: bold;
+color: #FFFFFF;
+}
+
+.post .content {
+margin-top: 10px;
+font-size: 14px;
+color: #E1E8ED; /* 投稿内容の色 */
+}
+
+.post .content-image {
+max-width: 80%;
+border-radius: 10px;
+margin-top: 10px;
+display: block;
+margin-left: auto;
+margin-right: auto;
+}
+
+.post .actions {
+display: flex;
+margin-left: 10%;
+margin-top: 10px;
+color: #8899A6;
+}
+
+.post .actions span {
+cursor: pointer;
+transition: color 0.3s;
+}
+
+.post .actions span:hover {
+color: #1DA1F2; /* ホバー時の青色 */
+}
+
+
+
+.blog {
+    display: none;
+}
+
+
+.ns {
+    display: flex;
+    margin-left: 10%;
+    margin-top: 10px;
+    color: #8899A6;
+}
+
+.ns span {
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.ns span:hover {
+    color: #1DA1F2; /* ホバー時の青色 */
+}
+
+/*
+    .box1{
+        margin-left: 5%;
+        margin-top: 5%;
+        border-radius: 10px;
+      width:20%;
+      height:10%;
+      background-color: #192734;
+text-align: center;
+      color: #8899A6;
+    }
+    .box2{
+        margin-top: 5%;
+        border-radius: 10px;
+        margin-left: 5%;
+      width:20%;
+      height:10%;
+      background-color: #192734;
+      color: #8899A6;
+      text-align: center;
+    }
+    .box3{
+        margin-top: 5%;
+        border-radius: 10px;
+        margin-left: 5%;
+      width:20%;
+      height:10%;
+      background-color: #192734;
+      color: #8899A6;
+      text-align: center;
+    }
+*/
+
+
+
+
+
+
+.like {
+
+box-sizing: border-box; 
+margin-top: 5px; /* 上に5pxの間隔を追加 */
+width: 80%;
+background-color: #192734; /* 投稿の背景色 */
+border-radius: 10px;
+padding: 15px;
+margin-bottom: 20px;
+color: #FFFFFF;
+}
+
+.like .info {
+display: flex;
+align-items: center;
+margin-bottom: 10px;
+}
+
+.like .info img {
+width: 40px;
+height: 40px;
+border-radius: 50%; /* 丸いアイコン */
+margin-right: 10px;
+}
+
+.like .info .username {
+font-weight: bold;
+color: #FFFFFF;
+}
+
+.like .content {
+margin-top: 10px;
+font-size: 14px;
+color: #E1E8ED; /* 投稿内容の色 */
+}
+
+.like .content-image {
+max-width: 80%;
+border-radius: 10px;
+margin-top: 10px;
+display: block;
+margin-left: auto;
+margin-right: auto;
+}
+
+.like .actions {
+display: flex;
+margin-left: 10%;
+margin-top: 10px;
+color: #8899A6;
+}
+
+.like .actions span {
+cursor: pointer;
+transition: color 0.3s;
+}
+
+.like .actions span:hover {
+color: #1DA1F2; /* ホバー時の青色 */
+}
+
+
+
+.EditBio {
+    display: none;
+}
+
+
+.set-icon {
+    position: relative; 
+    margin-top: 30%;
+    margin-left: 80%;
+    background-color: #f2f2f2;
+    width: 30;
+    height: 30;
+}
+
+.base-image {
+  
+  margin-top: 20%;
+  margin-left: 40%;
+width: 3%;
+display: block;
+position:absolute
+}
+
+
+.bas{
+    width: 6%;
+display: block;
+position:absolute
+
+}
+
+
+.follow-button {
+    display: inline-block; 
+    padding: .7em 2em;
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0 2px 3px rgba(255, 255, 255, 0.25), 0 2px 3px -2px rgba(255, 255, 255, 0.15);
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: 600;
+    font-size: 1em;
+    text-align: center; /* テキストを中央揃え */
+    margin: 0 20px; /* ボタン間の余白を追加 */
+    transition: 800ms;
+}
+
+.follow-button:hover {
+    background-color: #1e1e1e;
+    color: white;
+    
+}
+
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+const likeButtons = document.querySelectorAll('.like-btn');
+likeButtons.forEach(button => {
+button.addEventListener('click', function () {
+const postId = this.dataset.postId; // ボタンのdata-post-id属性から投稿IDを取得
+const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // CSRFトークンを取得
+
+if (!postId) {
+   console.error('Post ID is missing');
+   return;
+}
+
+// いいねのURLを設定
+const url = `/post/${postId}/like/`;
+
+// Ajaxリクエストを送信
+fetch(url, {
+   method: 'POST',
+   headers: {
+       'X-CSRFToken': csrfToken, // CSRFトークンをヘッダーに追加
+   },
+})
+.then(response => response.json())
+.then(data => {
+   if (data.liked) {
+       this.textContent = '取り消す'; // ボタンのテキストを「取り消す」に変更
+   } else {
+       this.textContent = 'いいね'; // ボタンのテキストを「いいね」に変更
+   }
+   // いいね数を更新
+   const likeCountSpan = this.nextElementSibling; // 次の要素を取得
+   if (likeCountSpan) {
+       likeCountSpan.textContent = `${data.like_count}件`; // いいね数を更新
+   }
+})
+.catch(error => console.error('Error:', error));
+});
+});
+
+// 返信ボタンの処理
+const replyForms = document.querySelectorAll('.reply-form');
+replyForms.forEach(form => {
+form.addEventListener('submit', function (e) {
+e.preventDefault();
+
+const postId = this.dataset.postId;
+const imageId = this.dataset.imageId;
+const content = this.querySelector('textarea[name="content"]').value;
+const csrfToken = this.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+let url = '';
+if (postId) {
+   url = `/post/${postId}/reply/`;
+} else if (imageId) {
+   url = `/image/${imageId}/reply/`;
+}
+
+fetch(url, {
+   method: 'POST',
+   headers: {
+       'Content-Type': 'application/x-www-form-urlencoded',
+       'X-CSRFToken': csrfToken
+   },
+   body: new URLSearchParams({ content: content })
+})
+.then(response => response.json())
+.then(data => {
+   if (data.success) {
+       const repliesContainer = this.nextElementSibling; // 返信一覧のコンテナ
+       const newReply = document.createElement('div');
+       newReply.classList.add('reply');
+       newReply.innerHTML = `
+           <strong>${data.reply.user}</strong>: ${data.reply.content}<br>
+           <small>${data.reply.created_at}</small>
+       `;
+       repliesContainer.appendChild(newReply); // 新しい返信を追加
+       this.querySelector('textarea[name="content"]').value = ''; // フォームをリセット
+   } else {
+       alert('返信の送信に失敗しました。');
+   }
+})
+.catch(error => console.error('Error:', error));
+});
+});
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('.showFormButton');
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+                // 親要素（投稿全体）を取得
+                const postContainer = this.closest('.post');
+                // 親要素内のform-containerを取得
+                const formContainer = postContainer.querySelector('.form-container');
+                if (formContainer.style.display === 'none' || formContainer.style.display === '') {
+                    formContainer.style.display = 'block'; // フォームを表示
+                    this.textContent = "返信を閉じる";
+                } else {
+                    formContainer.style.display = 'none'; // フォームを隠す
+                    this.textContent = "返信を表示";
+                }
+            });
+        });
+    });
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const split2 = document.querySelector('.split-2'); 
+    const like = document.querySelector('.nun'); 
+    const posts = document.querySelector('.nan');
+    const blogs = document.querySelector('.blog');
+
+    if (split2 && like && posts) {
+        split2.addEventListener('click', function () {
+            // liked-postsの表示/非表示を切り替え
+            if (like.style.display === 'none' || like.style.display === '') {
+                like.style.display = 'block'; 
+                posts.style.display = 'none';
+                blogs.style.display = 'none';
+            } else {
+                like.style.display = 'none';
+            }
+
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const split1 = document.querySelector('.split-1'); 
+    const like = document.querySelector('.nun'); 
+    const posts = document.querySelector('.nan');
+    const blogs = document.querySelector('.blog');
+
+    if (split1 && like && posts) {
+        split1.addEventListener('click', function () {
+            // liked-postsの表示/非表示を切り替え
+            if (posts.style.display === 'none' || posts.style.display === '') {
+                posts.style.display = 'block'; 
+                like.style.display = 'none';
+                blogs.style.display = 'none';
+            } 
+
+        });
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const split4 = document.querySelector('.split-4'); 
+    const like = document.querySelector('.nun'); 
+    const posts = document.querySelector('.nan');
+    const blogs = document.querySelector('.blog');
+
+    if (split4 && like && posts) {
+        split4.addEventListener('click', function () {
+            // liked-postsの表示/非表示を切り替え
+            if (blogs.style.display === 'none' || blogs.style.display === '') {
+                blogs.style.display = 'block'; 
+                like.style.display = 'none';
+                posts.style.display = 'none';
+            } 
+
+        });
+    }
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const closebutton = document.getElementById('.base-image'); 
+    const EditBio = document.querySelector('.EditBio'); 
+
+    if (closebutton && EditBio) {
+        closebutton.addEventListener('click', function () {
+            EditBio.style.display = 'none'; // Simplified logic to hide the box
+        });
+    }
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const split4 = document.querySelector('.base-image'); 
+    const like = document.querySelector('.EditBio'); 
+    if (split4 && like) {
+        split4.addEventListener('click', function () {
+            // liked-postsの表示/非表示を切り替え
+            if (like.style.display === 'none' || like.style.display === '') {
+ 
+                like.style.display = 'block';
+     
+            } 
+
+        });
+    }
+});
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const followButton = document.getElementById('follow-button');
+        if (followButton) {
+            followButton.addEventListener('click', function () {
+                const username = this.dataset.username;
+                const followersCountElem = document.querySelector('.followers-count');
+                let currentCount = parseInt(followersCountElem.textContent, 10);
+    
+                fetch(`/user/${username}/follow/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        this.textContent = data.is_following ? 'フォロー解除' : 'フォロー';
+                        // フォロー時は+1、解除時は-1
+                        if (data.is_following) {
+                            followersCountElem.textContent = currentCount + 1;
+                        } else {
+                            followersCountElem.textContent = currentCount - 1;
+                        }
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        }
+    });
+    </script>
+
+
+
+</head>
+
+
+<body>
+    
+
+
+
+
+
+    <div class="odd"><div class="channel">謎の空間1</div></div>
+
+    <div class="sidebar">
+        <a href="{% url 'post_list' %}"><div class="channel">ホーム</div></a>
+        <a href="{% url 'following_posts' %}"><div class="channel">フォローの投稿</div></a>
+        <div class="channel">通知</div>
+        <div class="channel">DM</div>
+        <div class="channel">ランキング</div>
+        <div class="channel">ブログ</div>
+        <div class="channel">サービス一覧</div>
+        <div class="channel">市場</div>
+
+
+        
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'user_profile' request.user.username %}">
+
+            {% if request.user.profile.icon %}
+                <img src="{{ request.user.profile.icon.url }}" alt="User Icon" style="width: 40px; height: 40px; border-radius: 50%;">
+            {% else %}
+                <img src="{% static 'icons/default_icon.png' %}" alt="Default Icon" style="width: 40px; height: 40px; border-radius: 50%;">
+            {% endif %}
+        {% else %}
+            <img src="{% static 'icons/default_icon.png' %}" alt="Default Icon" style="width: 40px; height: 40px; border-radius: 50%;">
+        {% endif %}
+    </a>
+
+
+    </div>
+
+
+
+
+<div class="search_form">
+<form action="#" class="search-form-2">
+<label>
+<input type="text" placeholder="キーワードを入力">
+</label>
+<button type="submit" aria-label="検索"></button>
+</form>
+</div>
+
+
+<div class="chat-area">
+
+
+
+    <div class="chat_head">
+        <a href="{% url 'post_list' %}" style="margin-left: 5%;" >鮪彗星</a>
+        {% if request.user.is_authenticated %}
+            <a class="logout" onclick="window.location.href='/accounts/logout/';">ログアウト</a>
+        {% else %}
+            <a class="login" onclick="window.location.href='/accounts/login/';">ログイン</a>
+        {% endif %}
+
+        <a class = "username">
+        {{request.user.username}}さん 
+        </a>
+    </div>
+
+
+   
+
+
+
+    <div class="backyard">
+
+        <div class="container">
+            <img src="{% static 'iconf/setting.png' %}" alt="プロフ設定のアイコン" class="base-image">
+          </div>
+
+
+
+            <a class="mc">最終イン: {{ profile_user.last_login|date:"Y-m-d H:i:s" }}</a>
+                <a class="mc">ID: {{ profile_user.id }}</a>
+
+
+
+<style>
+    
+
+
+    
+.mc{
+    width: 50%;
+    display:block;
+    line-height:1;
+    font-weight:600;
+    border:1px solid #344c66;
+    border-radius:17px;
+    font-size:13px;
+    padding:11px 16px 10px;
+    transition:all 600ms;
+
+    font-size:11px;border-radius:20px;
+}
+
+
+.mc:hover
+{opacity:1;
+    background-color:#1338a9;
+    color:#ffffff;
+    border:6px solid transparent
+}
+
+</style>
+
+
+
+
+    </div>
+
+    <div>
+        {% if profile_user.profile.icon %}
+            <img src="{{ profile_user.profile.icon.url }}" alt="User Icon" class="user_icon">
+        {% else %}
+            <img src="{% static 'icons/default_icon.png' %}" alt="Default Icon"  class="user_icon">
+        {% endif %}
+    </div>
+
+
+
+
+    <h1 class="user_name">{{ profile_user.username }}</h1>
+<!--
+    <div class="left box1">post</div>
+    <div class="left box2">like</div>
+    <div class="left box3">blog</div>
+  -->
+
+
+
+
+  
+<div class="user_expl">
+<p class="user_bio">{{ profile_user.profile.bio}}</p>
+<p class="date">登録日: {{ profile_user.date_joined }}</p>
+</div>
+
+
+<div class="EditBio">
+    <p>{{ profile_user.profile.bio|default:"自己紹介がまだ設定されていません。" }}</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">保存</button>
+    </form>
+</div>
+
+<style>
+    .followers , .follows {
+        color: #8899A6;
+
+    }
+    .followers-count, .follows-count {
+        color:white
+    }
+
+</style>
+
+<div class="wq">
+    {% if request.user.is_authenticated and request.user != profile_user %}
+<button id="follow-button" data-username="{{ profile_user.username }}" class="follow-button">
+    {% if profile_user in user.connection.following.all %}
+        フォロー解除
+    {% else %}
+        フォロー
+    {% endif %}
+</button>
+{% endif %}
+<span class="followers">フォロワー数: <span class="followers-count">{{ profile_user.followers.count }}</span></span>
+<span class="follows">フォロー数: <span class="follows-count">{{ profile_user.connection.following.count }}</span></span>
+</div>
+
+
+
+
+
+
+
+  <div class="boxx">
+
+  <div class="three-split">
+    <div class="split-1">Post</div>
+    <div class="split-2">Like</div>
+    <div class="split-3">Rep</div>
+    <div class="split-4">Blog</div>
+    
+  </div>
+
+
+</div>
+
+
+<div class="nun" style="display: none;">
+{% for liked_post in liked_posts %}
+<div class="post">
+    <div class="info">
+            <div class="info">
+                {% if liked_post.user.profile.icon %}
+                    <img src="{{ liked_post.user.profile.icon.url }}" alt="User Icon" style="width: 40px; height: 40px; border-radius: 50%;">
+                {% else %}
+                    <img src="{% static 'icons/default_icon.png' %}" alt="Default Icon" style="width: 40px; height: 40px; border-radius: 50%;">
+                {% endif %}
+                <a href="{% url 'user_profile' liked_post.user.username %}">
+                    <strong class="message">{{ liked_post.user.username }}</strong>
+                </a>
+            </div>
+    </div>
+
+    <a href="{% url 'detail' item.id %}">
+        {% if item.content %}
+        <div>
+            {{ item.content|safe }}
+        </div>
+        {% endif %}
+        {% if item.image %}
+        <img src="{{ item.image.url }}" alt="Uploaded Image" class="content-image" >
+        {% endif %}
+        {% if item.iframe_url %}
+        <div class="iframe-wrapper">
+            <iframe src="{{ item.iframe_url }}"></iframe>
+        </div>
+
+        {% endif %}
+    </a>
+
+    
+    <div class="actions">
+        <span class="like-btn" data-post-id="{{ liked_post.id }}">
+            {% if user in liked_post.like.all %}
+                取り消す
+            {% else %}
+                いいね
+            {% endif %}
+        </span>
+        <span class="like-count">{{ liked_post.like.count }}件</span>
+
+        <!--<span class="rep">返信</span>-->
+        
+    <span class="showFormButton">返信を表示</span>
+    </div>
+
+    <div class="form-container">
+        <form class="reply-form" data-post-id="{{ liked_post.id }}" style="margin-bottom: 10px;">
+            {% csrf_token %}
+            <textarea name="content" rows="3" placeholder="返信を入力してください" style="width: 100%; border-radius: 5px; padding: 5px; box-sizing: border-box;"></textarea>
+            <button type="submit" style="margin-top: 5px; background-color: #1DA1F2; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">送信</button>
+        </form>
+        <div class="replies" style="max-height: 200px; overflow-y: auto; padding: 5px; border-top: 1px solid #8899A6;">
+            {% for reply in item.replies.all %}
+                <div class="reply" style="margin-bottom: 10px; padding: 5px; background-color: #15202B; border-radius: 5px;">
+                    <a href="{% url 'user_profile' reply.user.username %}" style="color: #1DA1F2; font-weight: bold;">
+                        {{ reply.user.username }}
+                    </a>: {{ reply.content }}<br>
+                    <small style="color: #8899A6;">{{ reply.created_at }}</small>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+</div>
+
+
+
+<div class="nan" style="display: block;">
+    {% for post in posts %}
+<div class="post">
+    <div class="info">
+    <div class="info">
+                {% if post.user.profile.icon %}
+                    <img src="{{ post.user.profile.icon.url }}" alt="User Icon" style="width: 40px; height: 40px; border-radius: 50%;">
+                {% else %}
+                    <img src="{% static 'icons/default_icon.png' %}" alt="Default Icon" style="width: 40px; height: 40px; border-radius: 50%;">
+                {% endif %}
+                                <a href="{% url 'user_profile' post.user.username %}">
+                                    <strong class="message">{{ post.user.username }}</strong>
+                                </a>
+            </div>
+    </div>
+
+    <a href="{% url 'detail' post.id %}">
+        {% if post.content %}
+        <div>
+            {{ post.content|safe }}
+        </div>
+        {% endif %}
+        {% if post.image %}
+        <img src="{{ post.image.url }}" alt="Uploaded Image" class="content-image" >
+        {% endif %}
+        {% if post.iframe_url %}
+        <div class="iframe-wrapper">
+            <iframe src="{{ post.iframe_url }}"></iframe>
+        </div>
+
+        {% endif %}
+    </a>
+
+    <div class="actions">
+        <span class="like-btn" data-post-id="{{ post.id }}">
+            {% if user in post.like.all %}
+                取り消す
+            {% else %}
+                いいね
+            {% endif %}
+        </span>
+        <span class="like-count">{{ post.like.count }}件</span>
+        <span class="showFormButton">返信を表示</span>
+        <!--<span class="rep">返信</span>-->
+    </div>
+
+    <div class="form-container">
+        <form class="reply-form" data-post-id="{{ post.id }}" style="margin-bottom: 10px;">
+            {% csrf_token %}
+            <textarea name="content" rows="3" placeholder="返信を入力してください" style="width: 100%; border-radius: 5px; padding: 5px; box-sizing: border-box;"></textarea>
+            <button type="submit" style="margin-top: 5px; background-color: #1DA1F2; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">送信</button>
+        </form>
+        <div class="replies" style="max-height: 200px; overflow-y: auto; padding: 5px; border-top: 1px solid #8899A6;">
+            {% for reply in post.replies.all %}
+                <div class="reply" style="margin-bottom: 10px; padding: 5px; background-color: #15202B; border-radius: 5px;">
+                    <a href="{% url 'user_profile' reply.user.username %}" style="color: #1DA1F2; font-weight: bold;">
+                        {{ reply.user.username }}
+                    </a>: {{ reply.content }}<br>
+                    <small style="color: #8899A6;">{{ reply.created_at }}</small>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+</div>
+{% endfor %}
+</div>
+    
+
+
+<div class="blog">
+    工事中です
+</div>
+
+
+
+
+
+
+
+
+
+
+<!--
+<div class="tags">
+<span class="tag">@運営批判</span>
+<a class="i-tag">@科学数学</a>
+
+
+<a class="m-form-keyWord__btn" href="">
+   #スタッフインタビュー
+</a>
+
+
+
+<span>@自作ゲーム部</span>
+<span>@HSP特設</span>
+<span>@リアタイ実況</span>
+<span>@飲酒</span>
+<span>@技術</span>
+<span>@UNIX</span>
+<span>@自己紹介</span>
+<span>@古戦場</span>
+<span>@言語総合</span>
+<span>@ゲーム</span>
+<span>@第9地区</span>
+<span>@法律</span>
+<span>@雑談募集</span>
+<span>@投資・経営</span>
+<span>@政治</span>
+<span>@R18</span>
+<span>アニメ</span>
+</div>
+-->
+
+</body>
+

@@ -1,0 +1,86 @@
+{% load custom_filters %}
+
+{% load static %}
+
+<head>
+
+    <link rel="stylesheet" href="{% static 'board/base.css' %}">
+{% csrf_token %}
+
+
+<style>
+    .boxx {
+
+    
+margin-top: 2%;
+
+}
+
+
+.three-split {
+  display: flex;
+  width: 80%;
+  border-bottom: 1px solid #8899A6;; /* 線の太さと色 */
+
+}
+
+
+
+.split-1 ,.split-2 ,.split-3 ,.split-4{
+
+    color: #8899A6;
+  flex: 1;              
+  padding: 10px;
+  text-align: center;
+  transition:all 600ms;
+}
+
+.split-1:hover, .split-2:hover, .split-3:hover, .split-4:hover {
+    opacity: 1;
+    background-color: #0a6592;
+    color: #fff;
+    border: 1px solid transparent;
+}
+
+/* 最初の要素以外の左側に縦線を引く */
+.split-2 ,.split-3 ,.split-4:not(:first-child) {
+  border-left: 1px solid #8899A6;; /* 縦線の太さと色を指定 */
+}
+.user_expl {
+    margin-left: 5%;
+}
+
+.boxa {
+    display: none;
+position: fixed;
+margin-left: 15%;
+    width: 28.8%;
+    height: 55%;
+    background-color: black;
+    border-radius: 20px;
+    color: #8899A6;   
+}
+
+
+
+</style>
+
+
+
+</head>
+<iframe
+  src="https://www.onionsoft.net/hsp/hsp3js/block3.html"
+  width="800"     
+  height="600"    
+  frameborder="0"
+  allow="fullscreen"
+  sandbox="allow-scripts allow-same-origin">
+</iframe>
+
+
+
+    <body>
+
+
+    </body>
+

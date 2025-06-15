@@ -1,0 +1,700 @@
+{% load custom_filters %}
+
+{% load static %}
+
+<head>
+
+    <link rel="stylesheet" href="{% static 'board/base.css' %}">
+{% csrf_token %}
+
+
+<style>
+    .boxx {
+
+    
+margin-top: 2%;
+
+}
+
+
+.three-split {
+  display: flex;
+  width: 80%;
+  border-bottom: 1px solid #8899A6;; /* 線の太さと色 */
+
+}
+
+
+
+.split-1 ,.split-2 ,.split-3 ,.split-4{
+
+    color: #8899A6;
+  flex: 1;              
+  padding: 10px;
+  text-align: center;
+  transition:all 600ms;
+}
+
+.split-1:hover, .split-2:hover, .split-3:hover, .split-4:hover {
+    opacity: 1;
+    background-color: #0a6592;
+    color: #fff;
+    border: 1px solid transparent;
+}
+
+/* 最初の要素以外の左側に縦線を引く */
+.split-2 ,.split-3 ,.split-4:not(:first-child) {
+  border-left: 1px solid #8899A6;; /* 縦線の太さと色を指定 */
+}
+.user_expl {
+    margin-left: 5%;
+}
+
+.boxa {
+    display: none;
+position: fixed;
+margin-left: 15%;
+    width: 28.8%;
+    height: 55%;
+    background-color: black;
+    border-radius: 20px;
+    color: #8899A6;   
+}
+
+
+</style>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const likeButtons = document.querySelectorAll('.like-btn');
+        likeButtons.forEach(button => {
+        button.addEventListener('click', function () {
+        const postId = this.dataset.postId; // ボタンのdata-post-id属性から投稿IDを取得
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // CSRFトークンを取得
+        
+        if (!postId) {
+           console.error('Post ID is missing');
+           return;
+        }
+        
+        // いいねのURLを設定
+        const url = `/post/${postId}/like/`;
+        
+        // Ajaxリクエストを送信
+        fetch(url, {
+           method: 'POST',
+           headers: {
+               'X-CSRFToken': csrfToken, // CSRFトークンをヘッダーに追加
+           },
+        })
+        .then(response => response.json())
+        .then(data => {
+           if (data.liked) {
+               this.textContent = '取り消す'; // ボタンのテキストを「取り消す」に変更
+           } else {
+               this.textContent = 'いいね'; // ボタンのテキストを「いいね」に変更
+           }
+           // いいね数を更新
+           const likeCountSpan = this.nextElementSibling; // 次の要素を取得
+           if (likeCountSpan) {
+               likeCountSpan.textContent = `${data.like_count}件`; // いいね数を更新
+           }
+        })
+        .catch(error => console.error('Error:', error));
+        });
+        });
+        
+        // 返信ボタンの処理
+        const replyForms = document.querySelectorAll('.reply-form');
+        replyForms.forEach(form => {
+        form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        
+        const postId = this.dataset.postId;
+        const imageId = this.dataset.imageId;
+        const content = this.querySelector('textarea[name="content"]').value;
+        const csrfToken = this.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        
+        let url = '';
+        if (postId) {
+           url = `/post/${postId}/reply/`;
+        } else if (imageId) {
+           url = `/image/${imageId}/reply/`;
+        }
+        
+        fetch(url, {
+           method: 'POST',
+           headers: {
+               'Content-Type': 'application/x-www-form-urlencoded',
+               'X-CSRFToken': csrfToken
+           },
+           body: new URLSearchParams({ content: content })
+        })
+        .then(response => response.json())
+        .then(data => {
+           if (data.success) {
+               const repliesContainer = this.nextElementSibling; // 返信一覧のコンテナ
+               const newReply = document.createElement('div');
+               newReply.classList.add('reply');
+               newReply.innerHTML = `
+                   <strong>${data.reply.user}</strong>: ${data.reply.content}<br>
+                   <small>${data.reply.created_at}</small>
+               `;
+               repliesContainer.appendChild(newReply); // 新しい返信を追加
+               this.querySelector('textarea[name="content"]').value = ''; // フォームをリセット
+           } else {
+               alert('返信の送信に失敗しました。');
+           }
+        })
+        .catch(error => console.error('Error:', error));
+        });
+        });
+        });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('.showFormButton');
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+                // 親要素（投稿全体）を取得
+                const postContainer = this.closest('.post');
+                // 親要素内のform-containerを取得
+                const formContainer = postContainer.querySelector('.form-container');
+                if (formContainer.style.display === 'none' || formContainer.style.display === '') {
+                    formContainer.style.display = 'block'; // フォームを表示
+                    this.textContent = "返信を閉じる";
+                } else {
+                    formContainer.style.display = 'none'; // フォームを隠す
+                    this.textContent = "返信を表示";
+                }
+            });
+        });
+    });
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const button = document.querySelector('.button-4'); 
+    const box = document.querySelector('.box'); 
+
+    if (button && box) {
+        button.addEventListener('click', function () {
+ 
+            if (box.style.display === 'none' || box.style.display === '') {
+                box.style.display = 'block';
+            } else {
+                box.style.display = 'none';
+            }
+        });
+    }
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const button = document.querySelector('.button-5'); 
+    const box = document.querySelector('.box1'); 
+
+    if (button && box) {
+        button.addEventListener('click', function () {
+ 
+            if (box.style.display === 'none' || box.style.display === '') {
+                box.style.display = 'block';
+            } else {
+                box.style.display = 'none';
+            }
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const closebutton = document.getElementById('closebutton'); 
+    const box = document.querySelector('.box'); 
+
+    if (closebutton && box) {
+        closebutton.addEventListener('click', function () {
+            box.style.display = 'none'; // Simplified logic to hide the box
+        });
+    }
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const closebutton = document.getElementById('clos'); 
+    const box = document.querySelector('.box1'); 
+
+    if (closebutton && box) {
+        closebutton.addEventListener('click', function () {
+            box.style.display = 'none'; // Simplified logic to hide the box
+        });
+    }
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const splitElements = document.querySelectorAll(".split-2");
+
+    splitElements.forEach(element => {
+        element.addEventListener("click", function() {
+            window.location.hash = "#thread";
+        });
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const splitElements = document.querySelectorAll(".split-1");
+
+    splitElements.forEach(element => {
+        element.addEventListener("click", function() {
+            history.replaceState(null, null, location.pathname);
+
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const splitElements = document.querySelectorAll(".split-3");
+
+    splitElements.forEach(element => {
+        element.addEventListener("click", function() {
+            history.replaceState(null, null, location.pathname);
+
+        });
+    });
+});
+document.addEventListener("DOMContentLoaded", function() {
+    const threadList = document.getElementById("thread-list");
+
+    // 初回ロード時にURLのハッシュタグを確認
+    if (window.location.hash === "#thread") {
+        threadList.style.display = "block";
+    } else {
+        threadList.style.display = "none"; // デフォルト状態
+    }
+
+    // ハッシュタグの変更を監視
+    window.addEventListener("hashchange", function() {
+        if (window.location.hash === "#thread") {
+            threadList.style.display = "block";
+        } else {
+            threadList.style.display = "none";
+        }
+    });
+});
+
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const thread = document.getElementById("thread");
+        const post = document.querySelector(".Wea");
+        const chat = document.querySelector(".chat");
+    
+        function toggleThreadView() {
+            if (window.location.hash === "#thread") {
+                if (thread) thread.style.display = "block";
+                if (post) post.style.display = "none";
+                if (chat) chat.style.display = "none";
+            } else {
+                if (thread) thread.style.display = "none";
+                if (post) post.style.display = "block";
+                if (chat) chat.style.display = "block";
+            }
+        }
+    
+        // 初回ロード時
+        toggleThreadView();
+    
+        // ハッシュタグの変更を監視
+        window.addEventListener("hashchange", toggleThreadView);
+    });
+    </script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const split1 = document.querySelector('.split-1'); 
+    const post = document.querySelector('.Wea'); 
+    const thread = document.querySelector('.thread');
+    const chat = document.querySelector('.chat1');
+
+    if (split1 && post && thread && chat) {
+        split1.addEventListener('click', function () {
+            // liked-postsの表示/非表示を切り替え
+            if (post.style.display === 'none' || post.style.display === '') {
+                post.style.display = 'block'; 
+                thread.style.display = 'none';
+                chat.style.display = 'none';
+            } 
+
+        });
+    }
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const split1 = document.querySelector('.split-2'); 
+    const post = document.querySelector('.Wea'); 
+    const thread = document.querySelector('.thread');
+    const chat = document.querySelector('.chat1');
+
+    if (split1 && post && thread && chat) {
+        split1.addEventListener('click', function () {
+            // liked-postsの表示/非表示を切り替え
+            if (thread.style.display === 'none' || thread.style.display === '') {
+                thread.style.display = 'block'; 
+                post.style.display = 'none';
+                chat.style.display = 'none';
+            } 
+
+        });
+    }
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const split1 = document.querySelector('.split-3'); 
+    const post = document.querySelector('.Wea'); 
+    const thread = document.querySelector('.thread');
+    const chat = document.querySelector('.chat1');
+
+    if (split1 && post && thread && chat) {
+        split1.addEventListener('click', function () {
+            // liked-postsの表示/非表示を切り替え
+            if (chat.style.display === 'none' || chat.style.display === '') {
+                chat.style.display = 'block'; 
+                thread.style.display = 'none';
+                post.style.display = 'none';
+            } 
+
+        });
+    }
+});
+</script>
+
+
+</head>
+
+
+    <body>
+
+    
+    <div class="sidebar">
+        <a href="{% url 'post_list' %}"><div class="channel">ホーム</div></a>
+        <a href="{% url 'following_posts' %}"><div class="channel">フォローの投稿</div></a>
+        <div class="channel">通知</div>
+        <div class="channel">DM</div>
+        <div class="channel">ランキング</div>
+        <div class="channel">ブログ</div>
+        <div class="channel">サービス一覧</div>
+        <div class="channel">市場</div>
+
+        
+
+        
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'user_profile' request.user.username %}">
+            {% if request.user.profile.icon %}
+                <img src="{{ request.user.profile.icon.url }}" alt="User Icon" style="width: 40px; height: 40px; border-radius: 50%;">
+            {% else %}
+                <img src="{% static 'icons/default_icon.png' %}" alt="Default Icon" style="width: 40px; height: 40px; border-radius: 50%;">
+            {% endif %}
+        {% else %}
+            <img src="{% static 'icons/default_icon.png' %}" alt="Default Icon" style="width: 40px; height: 40px; border-radius: 50%;">
+        {% endif %}
+    </a>
+
+
+    </div>
+    
+    <div class="search_form">
+        <form action="#" class="search-form-2">
+            <label>
+                <input type="text" placeholder="キーワードを入力">
+            </label>
+            <button type="submit" aria-label="検索"></button>
+        </form>
+        </div>
+
+
+
+
+<div class="chat-area"> 
+
+    <div class="chat_head">
+        <a href="{% url 'post_list' %}" style="margin-left: 5%;">TunaComet</a>
+        {% if request.user.is_authenticated %}
+            <a class="logout" onclick="window.location.href='/accounts/logout/';">ログアウト</a>
+        {% else %}
+            <a class="login" onclick="window.location.href='/accounts/login/';">ログイン</a>
+        {% endif %}
+        <!--
+        <div class="container">
+            <img src="{% static 'iconf/home.png' %}" alt="プロフ設定のアイコン" class="base-image">
+          </div>
+
+          <div class="container">
+            <img src="{% static 'iconf/prof.png' %}" alt="プロフ設定のアイコン" class="base-image">
+          </div>
+-->
+        <a class = "username">
+        {{request.user.username}}さん 
+        </a>
+    </div>
+    <div class="chat_head2">
+        <div class="mar">
+            6月15日に開設しました　　感想や要望などご気軽にお知らせ下さい
+        </div>
+    </div>
+    <style>
+    .chat_head2 {
+        width: 48%;
+        overflow: hidden;
+        background-color: #5b7e91;
+        margin-bottom: 10px;
+        border-radius: 3px;
+    }
+    .mar {
+        display: inline-block;
+        white-space: nowrap;
+        padding-left: 100%;
+        animation: marquee 12s linear infinite;
+
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+    @keyframes marquee {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
+    }
+    </style>
+
+
+
+
+
+    <div class="three-split" style="margin-top: 5%;">
+        <div class="split-1">posts</div>
+        <div class="split-2">Threads</div>
+        <div class="split-3">Chats</div>
+        
+      </div>
+
+
+
+
+
+
+
+<div class="boxa">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ thread_form.as_p }}
+        <button type="submit" class="button-3">スレッド作成</button>
+    </form>
+</div>
+
+
+
+
+
+
+<div class="box">
+    <form method="post" action="{% url 'post_create' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <textarea class="Area" name="content" rows="3" placeholder="内容を入力してください" maxlength="501"></textarea>
+        <input type="file" name="image" accept="image/*">
+        <div class="button-container">
+
+            <button type="submit" class="button-3">投稿</button>
+            <button type="button" class="button-3" id="closebutton">閉じる</button>
+
+        </div>
+    </form>
+</div>
+
+
+<div class="box1">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ thread_form.as_p }}
+        <button type="submit" class="button-3">スレッド作成</button>
+        <button type="button" class="button-3" id="clos">閉じる</button>
+    </form>
+</div>
+
+
+
+<div class="Wea">
+    {% for item in combined %}
+
+    <div class="post">
+        <div class="info">
+            <div class="info">
+                {% if item.user.profile.icon %}
+                    <img src="{{ item.user.profile.icon.url }}" alt="User Icon" style="width: 40px; height: 40px; border-radius: 50%;">
+                {% else %}
+                    <img src="{% static 'icons/default_icon.png' %}" alt="Default Icon" style="width: 40px; height: 40px; border-radius: 50%;">
+                {% endif %}
+                <a href="{% url 'user_profile' item.user.username %}">
+                    <strong class="message">{{ item.user.username }}</strong>
+                </a>
+
+                
+        {% if item.thread %}
+        <span style="margin-left: 30%;"></span>
+   <a href="{% url 'thread_detail' item.thread.id %}">
+        <strong style="color:#1DA1F2; font-weight:bold; ">
+       スレ: {{ item.thread.title }}
+       </strong>
+   </a>
+        {% endif %}
+
+
+            </div>
+        </div>
+
+
+
+
+
+        <a href="{% url 'detail' item.id %}">
+            {% if item.content %}
+            <div>
+                {{ item.content|safe }}
+            </div>
+            {% endif %}
+            {% if item.image %}
+            <img src="{{ item.image.url }}" alt="Uploaded Image" class="content-image" >
+            {% endif %}
+            {% if item.iframe_url %}
+            <div class="iframe-wrapper">
+                <iframe src="{{ item.iframe_url }}"></iframe>
+            </div>
+
+            {% endif %}
+        </a>
+
+    <div class="actions">
+        <span class="like-btn" data-post-id="{{ item.id }}">
+            {% if user in item.like.all %}
+                取り消す
+            {% else %}
+                いいね
+            {% endif %}
+        </span>
+        <span class="like-count">{{ item.like.count|default:0 }}件</span>
+
+        <span class="showFormButton" style="margin-left: 5%;">返信を表示</span>
+
+    </div>
+    <div class="form-container">
+        <form class="reply-form" data-post-id="{{ item.id }}" style="margin-bottom: 10px;">
+            {% csrf_token %}
+            <textarea name="content" rows="3" placeholder="返信を入力してください" style="width: 100%; border-radius: 5px; padding: 5px; box-sizing: border-box;"></textarea>
+            <button type="submit" style="margin-top: 5px; background-color: #1DA1F2; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">送信</button>
+        </form>
+        <div class="replies" style="max-height: 200px; overflow-y: auto; padding: 5px; border-top: 1px solid #8899A6;">
+            {% for reply in item.replies.all %}
+                <div class="reply" style="margin-bottom: 10px; padding: 5px; background-color: #15202B; border-radius: 5px;">
+                    <a href="{% url 'user_profile' reply.user.username %}" style="color: #1DA1F2; font-weight: bold;">
+                        {{ reply.user.username }}
+                    </a>: {{ reply.content }}<br>
+                    <small style="color: #8899A6;">{{ reply.created_at }}</small>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+
+
+        </div>
+        {% endfor %}
+    </div>
+
+<div class="thread" style="display: none; margin-top: 50px; " id="thread" >
+掲示板試験中です
+<div class="button-5">＋
+
+</div>
+<div class="thread-list"  id="thread-list">
+    <h3>スレッド一覧</h3>
+    <!-- スレッド一覧部分 -->
+<ul>
+    {% for thread in threads %}
+        <li>
+            <a href="{% url 'thread_detail' thread.id %}">{{ thread.title }}</a>
+            （{{ thread.user.username }}） - {{ thread.created_at|date:"Y-m-d H:i" }}
+            <span style="color:#1DA1F2;">[{{ thread.posts.count }}件の投稿]</span>
+        </li>
+    {% empty %}
+        <li>スレッドがありません。</li>
+    {% endfor %}
+</ul>
+
+</div>
+
+
+</div>
+
+
+<div class="chat1" style="display: none;">
+    チャット工事中です
+    </div>
+
+
+
+    
+
+   
+
+
+<div class="left-side">
+    <div class="button-4"  style="margin-left: 15%;">＋
+
+</div>
+
+
+
+
+    <ul class="tag_list">
+
+        <p style="white-space: pre-line;">
+        何の変哲もないSNSのtunacometです
+        スレッドやタイムラインなどの機能を備えています
+        WebGl対応やYoutubeの埋め込みに対応
+        公式ピックアップや投稿祭を予定しています
+        Djangoを使い実装しました
+        多くの人に愛されるSNSになれるよう
+        今後も改善や機能の強化を目指します
+        
+        連絡　削除依頼　ご寄付　sample@i.com
+
+
+        今後の予定
+
+        2025/6 通知やDM機能を実装
+        2025/6 チャットと匿名チャット実装
+        2025/7 グループチャットを実装
+
+
+        
+        </p>
+
+
+    </ul>
+
+</div>
+
+    </body>
+

@@ -1,0 +1,30 @@
+<style>
+    .three-split {
+  display: flex;
+}
+
+.split-item {
+  flex: 1;              /* 均等に分割 */
+  padding: 10px;
+  text-align: center;
+}
+
+/* 最初の要素以外の左側に縦線を引く */
+.split-item:not(:first-child) {
+  border-left: 2px solid #666; /* 縦線の太さと色を指定 */
+}
+
+</style>
+
+
+<div class="three-split">
+    <div class="split-item">左</div>
+    <div class="split-item">中央</div>
+    <div class="split-item">右</div>
+  </div>
+
+
+
+  <style>
+    
+  </style>

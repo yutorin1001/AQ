@@ -1,0 +1,388 @@
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #15202B; /* ツイッターの背景色 */
+        color: #FFFFFF; /* テキストの色 */
+    }
+    
+    .header {
+        height: 50px;
+        width: 100%;
+        background-color: #1DA1F2; /* ツイッターの青色 */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        position: fixed;
+        top: 0;
+        z-index: 10;
+        color: white;
+        font-weight: bold;
+    }
+    
+    .sidebar {
+        position: fixed;
+        top: 50px;
+        left: 0;
+        height: calc(100vh - 50px);
+        width: 12%;
+        background-color: #192734; /* サイドバーの背景色 */
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        color: #8899A6; /* サイドバーのテキスト色 */
+    }
+    
+    .sidebar .channel {
+        margin-bottom: 11px;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    .sidebar .channel:hover {
+        background-color: #1DA1F2; /* ホバー時の青色 */
+        color: white;
+    }
+    
+    .chat-area {
+        margin-top: 50px;
+        margin-left: 15%;
+        
+        width: 60%;
+        padding: 20px;
+        background-color: #15202B;
+        flex: 1;
+        overflow-y: auto;
+    }
+    
+    .post {
+        margin-top: 5px; /* 上に5pxの間隔を追加 */
+        width: 80%;
+        background-color: #192734; /* 投稿の背景色 */
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        color: #FFFFFF;
+    }
+    
+    .post .info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .post .info img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%; /* 丸いアイコン */
+        margin-right: 10px;
+    }
+    
+    .post .info .username {
+        font-weight: bold;
+        color: #FFFFFF;
+    }
+    
+    .post .content {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #E1E8ED; /* 投稿内容の色 */
+    }
+    
+    .post .content-image {
+        max-width: 80%;
+        border-radius: 10px;
+        margin-top: 10px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .post .actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        color: #8899A6;
+    }
+    
+    .post .actions span {
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+    
+    .post .actions span:hover {
+        color: #1DA1F2; /* ホバー時の青色 */
+    }
+    
+    /*
+    .tags {
+        overflow-y: auto;
+        border-radius: 10px;
+        margin-top: 5%;
+        position: absolute;
+        top: 50px;
+        right: calc(5% + 20px);
+        height: 30%;
+        width: 20%;
+        background-color: #192734;
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        color: #8899A6; 
+    }
+    */
+    
+    .tags {
+        position: fixed;
+        top: 15%;
+        right: 3%;
+        height: 30%;
+        width: 20%;
+        background-color: #192734; /* サイドバーの背景色 */
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        color: #8899A6; /* サイドバーのテキスト色 */
+    }
+    
+    .tags .tag:hover {
+        background-color: #1DA1F2; /* ホバー時の青色 */
+        color: white;
+    }
+
+    
+    
+
+
+
+    </style>
+
+<style>
+    
+   
+    a{font-size:100%;vertical-align:baseline;text-decoration:none;color:inherit}
+    body.is-en{font-family:"Open Sans",sans-serif;font-weight:400}
+    .m-form-keyWord,
+    
+
+    .tag_list {
+        height: 200px; 
+        overflow-y: auto;
+        position: fixed;
+        top: 15%;
+        right: 1%;
+        width: 28%;
+        background-color: #192734;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+        font-size: 11px;
+        border-radius: 20px;
+        padding: 10px;
+    }
+    
+
+    .m-form-keyWord__btn{
+        display:block;
+        line-height:1;
+        font-weight:600;
+        border:1px solid #dcdbdc;
+        border-radius:17px;
+        font-size:13px;
+        padding:11px 16px 10px;
+        transition:all 400ms;
+        margin-top:11px;
+        margin-right:4px;
+        margin-left:4px;
+        font-size:11px;border-radius:20px;
+    }
+   
+
+    .m-form-keyWord__btn:hover
+    {opacity:1;
+        background-color:#0a923a;
+        color:#fff;
+        border:1px solid transparent
+    }
+    
+    
+    .search_form {
+    position: fixed; /* 要素を画面に固定 */
+    top: 85%; /* 上からの位置を調整 */
+    right: 3%; /* 右からの位置を調整 */
+    transform: none; /* 不要な変形を無効化 */
+    z-index: 100; /* 他の要素より前面に表示 */
+}
+
+    .search-form-2 {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.search-form-2 input {
+    width: 250px;
+    height: 45px;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 3px 0 0 3px;
+    box-sizing: border-box;
+    background-color: #f2f2f2;
+    font-size: 1em;
+    outline: none;
+}
+
+.search-form-2 input::placeholder {
+    color: #777777;
+}
+
+.search-form-2 button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 45px;
+    border: none;
+    border-radius: 0 3px 3px 0;
+    background-color: #2589d0;
+    cursor: pointer;
+}
+
+.search-form-2 button::after {
+    width: 24px;
+    height: 24px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z' fill='%23fff'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    content: '';
+}
+        </style>
+
+    <body>
+    <div class="header">
+        <div>ホーム</div>
+        <div>検索</div>
+        <div>プロフィール</div>
+
+            
+            
+            
+
+
+    </div>
+    
+    <div class="sidebar">
+        <div class="channel">ホーム</div>
+        <div class="channel">通知</div>
+        <div class="channel">メッセージ</div>
+        <div class="channel">ブックマーク</div>
+        <div class="channel">フォロー</div>
+        <div class="channel">プロフィール</div>
+    </div>
+    
+    <div class="search_form">
+        <form action="#" class="search-form-2">
+            <label>
+                <input type="text" placeholder="キーワードを入力">
+            </label>
+            <button type="submit" aria-label="検索"></button>
+        </form>
+        </div>
+
+
+
+
+    <div class="chat-area">
+        <div class="post">
+            <div class="info">
+                <img src="icon.jpg" alt="User Icon">
+                <span class="username">ユーザー名</span>
+            </div>
+            <div class="content">これは投稿内容の例です。</div>
+            <img src="at.jpg" class="content-image" alt="Content Image">
+            <div class="actions">
+                <span>いいね 1</span>
+                <span>リツイート</span>
+                <span>返信</span>
+            </div>
+        </div>
+    
+    </div>
+    
+
+    <ul class="tag_list">
+        <a class="m-form-keyWord__btn" href="">@自作ゲーム部</a>
+        <a class="m-form-keyWord__btn" href="">@HSP特設</a>
+     <a class="m-form-keyWord__btn" href="">@リアタイ実況</a>
+     <a class="m-form-keyWord__btn" href="">@自炊部</a>
+       <a class="m-form-keyWord__btn" href="">@飲酒部 </a>
+       <a class="m-form-keyWord__btn" href="">@深夜雑談部</a>
+
+
+      <a class="m-form-keyWord__btn" href="">@創作・イラスト</a>
+      <a class="m-form-keyWord__btn" href="">@創作・文学</a>
+   <a class="m-form-keyWord__btn" href="">@創作・音楽</a>
+     <a class="m-form-keyWord__btn" href="">@写真</a>
+    <a class="m-form-keyWord__btn" href="">@旅行総合</a>
+      <a class="m-form-keyWord__btn" href="">@UNIX</a>
+      <a class="m-form-keyWord__btn" href="">@技術</a>
+      <a class="m-form-keyWord__btn" href="">@天文部</a>
+      <a class="m-form-keyWord__btn" href="">@生物部</a>
+      <a class="m-form-keyWord__btn" href="">@自己紹介</a>
+      <a class="m-form-keyWord__btn" href="">@雑談したい</a>
+      <a class="m-form-keyWord__btn" href="">@フレンド募集</a>
+   <a class="m-form-keyWord__btn" href="">@古戦場</a>
+     <a class="m-form-keyWord__btn" href="">@言語総合</a>
+    <a class="m-form-keyWord__btn" href="">@ゲーム</a>
+
+
+   <a class="m-form-keyWord__btn" href="">@投資・経営</a>
+  <a class="m-form-keyWord__btn" href="">@政治</a>
+  <a class="m-form-keyWord__btn" href="">@海外情勢</a>
+ <a class="m-form-keyWord__btn" href="">@R18</a>
+  <a class="m-form-keyWord__btn" href="">@無法地帯</a>
+<a class="m-form-keyWord__btn" href="">@アジアンカオス</a>
+<a class="m-form-keyWord__btn" href="">@その他</a>
+<a class="m-form-keyWord__btn" href="">@例のアレ</a>
+</ul>
+
+
+
+
+    <!--
+    <div class="tags">
+            <span class="tag">@運営批判</span>
+            <a class="i-tag">@科学数学</a>
+
+   
+                <a class="m-form-keyWord__btn" href="">
+                    #スタッフインタビュー
+                </a>
+            
+
+
+            <span>@自作ゲーム部</span>
+            <span>@HSP特設</span>
+            <span>@リアタイ実況</span>
+            <span>@飲酒</span>
+            <span>@技術</span>
+            <span>@UNIX</span>
+            <span>@自己紹介</span>
+            <span>@古戦場</span>
+            <span>@言語総合</span>
+            <span>@ゲーム</span>
+            <span>@第9地区</span>
+            <span>@法律</span>
+            <span>@雑談募集</span>
+            <span>@投資・経営</span>
+            <span>@政治</span>
+            <span>@R18</span>
+   <span>アニメ</span>
+    </div>
+    -->
+    
+    </body>

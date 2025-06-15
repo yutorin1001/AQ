@@ -1,0 +1,324 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    color: white;
+
+    flex-direction: row;
+}
+
+
+a {
+text-decoration: none; /* 下線を消す */
+color: inherit; /* 親要素の色を継承 */
+}
+
+a:hover,
+a:visited,
+a:active {
+text-decoration: none; 
+color: inherit; 
+}
+
+/* REPRY */
+.form-container {
+display: none; 
+margin-top: 10px;
+background-color: #27292b;
+padding: 10px;
+border-radius: 5px;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.form-container textarea {
+width: 100%;
+padding: 10px;
+margin-bottom: 10px;
+border: 1px solid #ccc;
+border-radius: 5px;
+resize: none;
+}
+
+.form-container button {
+background-color: #7289da;
+color: white;
+border: none;
+padding: 10px 20px;
+border-radius: 5px;
+cursor: pointer;
+}
+
+
+
+
+.form-container button:hover {
+background-color: #5b6eae;
+}
+
+
+.reply {
+margin-top: 10px;
+padding: 5px;
+background-color: #1e1e1e;
+border-radius: 5px;
+}
+
+
+.logout {
+position: absolute;
+
+z-index: 101;
+margin-left: 60%;
+}
+
+
+.username {
+position: absolute;
+z-index: 101;
+left : 80%;
+}
+
+
+
+
+.Area {
+
+position: fixed;
+z-index: 100; 
+top: 90%;
+left: 68%;
+}
+
+.submit {
+position: fixed;
+z-index: 100; 
+top: 90%;
+left: 80%;
+}
+
+.sidebar {
+    position: fixed;
+    top: 50px;
+    right: 0;
+
+  height: calc(100vh - 50px); 
+    width: 15%;
+    background-color: 	#121214;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    z-index: 10;
+
+    
+}
+
+.message {
+    width: 60%;         /* 親要素の50%の幅を確保 */
+    margin: 0 auto; 
+   text-align: center;
+   padding: 0.2em 0.5em;
+
+background: #27292b;
+box-shadow: 0px 0px 0px 10px #27292b;
+
+
+}
+
+.message p {
+margin: 0; 
+padding: 0;
+}
+
+
+       .time {
+   text-align: center;
+   margin-bottom: 4%;
+}
+
+.channel {
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.channel:hover {
+    background-color: #7289da;
+    padding: 5px;
+}
+
+.header {
+    height: 50px;
+    width: 100%;
+
+    background-color: #23272a;
+    display: flex;
+    align-items: center;
+    left: 0;
+    padding: 0 20px;
+    z-index: 10; 
+    position: fixed;
+}
+
+
+
+.chat-area {
+    margin-top: 50px;
+    flex: 1;
+            
+    background-color: #1A1A1E;
+    padding: 20px;
+    overflow-y: auto;
+}
+.main-content {
+flex-direction: column;
+}
+
+    .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #1A1A1E;
+}
+
+
+
+
+  /*     background-color: #36393f;
+.message:hover {
+    background-color: 	#121214;
+    padding: 5px;
+}　*/
+
+
+.title {
+    font-size: large;
+    margin-left: 250px;
+}
+
+.left-side {
+    position: fixed;
+    top: 50px;
+    left: 0;
+
+    height: calc(100vh - 50px); 
+    width: 15%;
+    background-color: 	#121214;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    z-index: 10;
+
+}
+
+.buzz {
+
+    height: calc(100vh - 50px); 
+    border-radius: 6px; 
+
+background: #393A41;     
+position: fixed; 
+top: 60%;
+right: 1%;
+left: 84%;
+padding: 15px; 
+
+color: rgb(38, 137, 170); 
+margin-bottom: 60px; 
+}
+
+
+.buzzTx {
+margin-bottom: 30px;
+background-color: 	#393A41;
+}
+
+/* 位置を固定 
+.Toukou {
+position: relative;
+z-index: 100; 
+margin-top: 46%;
+right: 50%;
+}
+*/
+.A{
+/* 必要に応じてrelativeにする */
+position: fixed;
+z-index: 100; 
+top: 90%;
+left: 40%;
+}
+
+
+
+
+@media (max-width: 768px) {
+.sidebar {
+width: 100%; /* モバイルでは全幅を使用 */
+height: auto;
+position: relative;
+}
+
+
+
+.KA {
+position: fixed;
+top: 80%;
+left: 50%;
+}
+
+
+.A, .B, .C {
+text-align: center;
+
+
+
+
+}
+
+
+/* 
+.main-content {
+flex-direction: column;
+}
+
+    .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.chat-area {
+    margin-top: 50px;
+    flex: 1;
+            
+            background-color: #1A1A1E;
+    padding: 20px;
+    overflow-y: auto;
+
+    
+
+}
+
+.message {
+    margin-bottom: 10px;
+    margin-left: 550px;
+}
+
+*/
+
+
+
+
+.post-form button {
+align-self: flex-end;
+padding: 10px 20px;
+background-color: #7289da;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+.post-form button:hover {
+background-color: #5b6eae;
+}
+
+}

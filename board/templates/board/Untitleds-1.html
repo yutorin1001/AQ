@@ -1,0 +1,69 @@
+
+<style>
+    .box{
+        width: 40%;
+        height: 55%;
+        margin-top: 10%;
+        background-color: black;
+        border-radius: 20px;
+        color: #8899A6;
+    }
+
+
+    .Area {
+        color: #8899A6;
+        background:#000000;
+        width: 80%;
+        margin-top: 5%;
+        height: 60%;
+        margin-left: 10%;
+        resize: none;
+        border: none;
+        font-size: x-large;
+        
+    }
+
+    textarea:focus {
+    outline: none; /* フォーカス時のアウトラインを消す */
+    border-color: #e1e8ed; /* フォーカス時も同じ線の色にする */
+  }
+  .button-container {
+    display: flex; /* フレックスボックスを使用 */
+
+    align-items: center; /* ボタンを中央揃え */
+    width: 100%; /* コンテナの幅を指定 */
+    margin-top: 10px; /* 上部に余白を追加 */
+}
+
+.button-3 {
+    display: inline-block; 
+    padding: .9em 2em;
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0 2px 3px rgba(255, 255, 255, 0.25), 0 2px 3px -2px rgba(255, 255, 255, 0.15);
+    background-color: #2589d0;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1em;
+    text-align: center; /* テキストを中央揃え */
+    margin: 0 20px; /* ボタン間の余白を追加 */
+}
+
+.button-3:hover {
+    background-color: #1579c0;
+}
+</style>
+
+<div class="box">
+    <form method="post" action="{% url 'post_create' %}" enctype="multipart/form-data">
+        <textarea class="Area" name="content" rows="3" placeholder="内容を入力してください" maxlength="501"></textarea>
+        <input type="file" name="image" accept="image/*">
+        <div class="button-container">
+
+            <button type="submit" class="button-3">投稿</button>
+            <button type="button" class="button-3">閉じる</button>
+
+        </div>
+    </form>
+</div>
+
